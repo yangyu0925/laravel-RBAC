@@ -6,6 +6,20 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateUsersTable extends Migration
 {
+    // Both Admin and User tables
+    protected $tables = ['admins', 'users'];
+
+    /**
+     * Add the ability to run certain functions
+     * @param Closure $action
+     */
+    protected function eachTable(Closure $action)
+    {
+        foreach ($this->tables as $table) {
+            $action($table);
+        }
+    }
+
     /**
      * Run the migrations.
      *
@@ -13,13 +27,15 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+        $this->eachTable(function ($table) {
+            Schema::create($table, function (Blueprint $blueprint) {
+                $blueprint->increments('id');
+                $blueprint->string('name');
+                $blueprint->string('email')->unique();
+                $blueprint->string('password', 60);
+                $blueprint->rememberToken();
+                $blueprint->timestamps();
+            });
         });
     }
 
@@ -30,6 +46,8 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        $this->eachTable(function ($table) {
+            Schema::dropIfExists($table);
+        });
     }
 }

@@ -17,8 +17,25 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
+//        if (Auth::guard($guard)->check()) {
+//            return redirect('/admin');
+//        }
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+            if ($request->ajax()) {
+                return response('Unauthorized.', 401);
+            } else {
+                switch ($guard) {
+                    case 'admin':
+                        $path = '/admin';
+                        break;
+
+                    default:
+                        $path = '/user';
+                        break;
+                }
+
+                return redirect($path);
+            }
         }
 
         return $next($request);

@@ -14,3 +14,13 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Auth::routes();
+
+Route::group(['prefix' => 'user'], function () {
+    require __DIR__ . '/user.php';
+});
+
+Route::group(['prefix' => 'admin'], function () {
+    require __DIR__ . '/admin.php';
+});
