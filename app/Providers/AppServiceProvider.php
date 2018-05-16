@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->composer('admin.layouts.sidebar','App\Http\ViewComposers\AdminMenuComposer');
     }
 
     /**

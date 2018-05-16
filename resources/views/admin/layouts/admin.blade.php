@@ -75,7 +75,7 @@
     <!-- end #header -->
 
     <!-- begin #sidebar -->
-    {{--@include('admin.layouts.sidebar')--}}
+    @include('admin.layouts.sidebar')
     <div class="sidebar-bg"></div>
     <!-- end #sidebar -->
 
