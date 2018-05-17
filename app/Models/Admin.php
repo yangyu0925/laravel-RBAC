@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
+
 
 class Admin extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, EntrustUserTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -26,4 +29,20 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class,'role_user','user_id');
+    }
+
+    public function editViewData($id)
+    {
+        $user = $this->find($id, ['id', 'name', 'email']);
+        $userRole = DB::table('role_user')->where('user_id', $id)->first();
+        if ($user) {
+            return compact('user', 'userRole');
+        }
+        abort(404);
+    }
+
 }

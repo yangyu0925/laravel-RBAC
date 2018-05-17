@@ -12,6 +12,7 @@ class MenuController extends Controller
 
     public function __construct(Menu $menu)
     {
+        $this->middleware('CheckPermission:menus');
         $this->menu = $menu;
     }
 

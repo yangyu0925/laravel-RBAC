@@ -40,7 +40,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title"><h3>401</h3> Be right back.</div>
+                <div class="title"><h3>401</h3> {{$exception->getMessage()}}.</div>
             </div>
         </div>
     </body>

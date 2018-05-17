@@ -41,7 +41,7 @@ $(document).ready(function () {
             {"data": "description","name": "description","orderable" : false},
             {"data": "created_at","name": "created_at","orderable" : true},
             {"data": "updated_at","name": "updated_at","orderable" : true},
-            {"data": "button","name": "button",'type':'html',"orderable" : false}
+            {"data": "action","name": "action",'type':'html',"orderable" : false}
         ]
     });
 

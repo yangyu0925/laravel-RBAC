@@ -17,7 +17,8 @@
         <!-- begin sidebar nav -->
         <ul class="nav">
             @foreach($adminMenus as $adminMenu)
-                    <li class="has-sub">
+                @if(auth('admin')->user()->can($adminMenu['slug']))
+                <li class="has-sub">
                         <a href="javascript:;">
                             @if(isset($adminMenu['child']))
                                 <b class="caret pull-right"></b>
@@ -43,6 +44,7 @@
                             </ul>
                         @endif
                     </li>
+                @endif
             @endforeach
         <!-- begin sidebar minify button -->
             <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
