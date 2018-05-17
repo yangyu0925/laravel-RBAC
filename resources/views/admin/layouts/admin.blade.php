@@ -78,7 +78,6 @@
     @include('admin.layouts.sidebar')
     <div class="sidebar-bg"></div>
     <!-- end #sidebar -->
-
     <!-- begin #content -->
     @yield('admin-content')
     <!-- end #content -->

@@ -2,6 +2,7 @@
 
 Route::group(['middleware' => ['auth:admin']], function ($router) {
     $router->get('/', 'Admin\AdminController@index')->name('admin.index');
+    $router->resource('menus', 'Admin\MenuController');
 });
 
 // Authentication Routes...

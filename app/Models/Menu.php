@@ -15,39 +15,18 @@ class Menu extends Model
 
     public function getMenuComposerData()
     {
-        return $this->sortTreeList($this->sortList($this->getAll(['id','name','url','slug','parent_id'])));
+        return $this->sortTreeList($this->getAll(['id', 'name', 'url', 'slug', 'icon', 'parent_id', 'sort']));
     }
 
     public function getAll($columns = ['*'])
     {
-        $res = $this->all($columns)->toArray();
+        $result = $this->all($columns)->toArray();
 
-        $list = $this->sortList($res);
+        $sort = array_column($result, 'sort');
 
-//        foreach ($list as $key => $value) {
-//            $list[$key]['button'] = $this->getActionButtons('menus',$value['id']);
-//        }
+        array_multisort($sort, SORT_DESC, $result);
 
-        return $list;
-    }
-
-    /**
-     * 排序
-     * @param array     $data   需要循环的数组
-     * @param int       $id     获取id为$id下的子分类，0为所有分类
-     * @param array     $arr    将获取到的数据暂时存储的数组中，方便数据返回
-     * @return array            二维数组
-     */
-    protected function sortList(array $data, $id = 0, &$arr = [])
-    {
-        foreach ($data as $v) {
-            if ($id == $v['parent_id']) {
-                $arr[] = $v;
-                $this->sortList($data, $v['id'], $arr);
-            }
-        }
-
-        return $arr;
+        return $result;
     }
 
     /**
@@ -57,17 +36,18 @@ class Menu extends Model
      */
     public function sortTreeList($data = [])
     {
-        $tree = array();
-        $tmpMap = array();
+        $tree = [];
+        $temp = [];
+
         foreach ($data as $k => $v) {
-            $tmpMap[$v['id']] = $v;
+            $temp[$v['id']] = $v;
         }
 
         foreach ($data as $value) {
-            if (isset($tmpMap[$value['parent_id']])) {
-                $tmpMap[$value['parent_id']]['child'][] = &$tmpMap[$value['id']];
+            if (isset($temp[$value['parent_id']])) {
+                $temp[$value['parent_id']]['child'][] = &$temp[$value['id']];
             } else {
-                $tree[] = &$tmpMap[$value['id']];
+                $tree[] = &$temp[$value['id']];
             }
         }
 
